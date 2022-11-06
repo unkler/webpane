@@ -2,8 +2,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ValidationErrors from '@/Components/ValidationErrors.vue';
 import { Head } from '@inertiajs/inertia-vue3';
-import { reactive } from 'vue'
-import { Inertia } from '@inertiajs/inertia'
+import { reactive } from 'vue';
+import { Inertia } from '@inertiajs/inertia';
 
 const form = reactive({
   name: null,
