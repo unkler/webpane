@@ -21,12 +21,12 @@ const searchCustomers = () => {
 
 
 <template>
-    <Head title="商品管理" />
+    <Head title="顧客管理" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                商品管理
+                顧客管理
             </h2>
         </template>
 
@@ -56,14 +56,14 @@ const searchCustomers = () => {
                                         </thead>
                                         <tbody>
                                             <tr v-for="customer in customers.data" :key="customer.id">
-                                                <td class="px-4 py-3 text-blue-500 underline">
+                                                <td class="px-4 py-3 border-b-2 border-gray-200 text-blue-500 underline">
                                                     <Link :href="route('customers.show', {customer: customer.id})">
                                                         {{ customer.id}}
                                                     </Link> 
                                                 </td>
-                                                <td class="px-4 py-3">{{ customer.name }}</td>
-                                                <td class="px-4 py-3">{{ customer.kana }}</td>
-                                                <td class="px-4 py-3">{{ customer.tel}}</td>
+                                                <td class="px-4 py-3 border-b-2 border-gray-200">{{ customer.name }}</td>
+                                                <td class="px-4 py-3 border-b-2 border-gray-200">{{ customer.kana }}</td>
+                                                <td class="px-4 py-3 border-b-2 border-gray-200">{{ customer.tel}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
