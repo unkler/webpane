@@ -1,50 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Order;
-use Inertia\Inertia;
 
-class AnalysisController extends Controller
-{
-    public function index(){
+class DecileService {
 
-        $start_date = '2022-10-01';
-        $end_date = '2022-10-31';
-
-        // $period = Order::betweenDate($start_date, $end_date)
-        //     ->groupBy('id')
-        //     ->selectRaw('id, sum(subtotal) as total, customer_name, status, created_at')
-        //     ->orderBy('created_at')
-        //     ->paginate(50);
-        // // dd($period);
-    
-        // $subQuery = Order::betweenDate($start_date, $end_date)
-        //     ->where('status', true)
-        //     ->GroupBy('id')
-        //     ->selectRaw('id, sum(subtotal) as totalPerPurchase, DATE_FORMAT(created_at, "%Y%m%d") as date');
-
-        // $data = DB::table($subQuery)
-        //     ->groupBy('date')
-        //     ->selectRaw('date, sum(totalPerPurchase) as total')
-        //     ->orderBy('date')
-        //     ->get();
-
-        // // dd($data);
-
-        return Inertia::render('Analysis');
-    }
-
-    public function decile()
+    public static function decile($subQuery)
     {
-        $start_date = '2022-10-01';
-        $end_date = '2022-10-31';
-
         // 1. 購買ID毎にまとめる
-        $subQuery = Order::betweenDate($start_date, $end_date)
-            ->groupBy('id')
+        $subQuery = $subQuery->groupBy('id')
             ->selectRaw('id, customer_id, customer_name, SUM(subtotal) as totalPerPurchase');
 
         // 2. 会員毎にまとめて購入金額順にソートする
@@ -102,6 +67,11 @@ class AnalysisController extends Controller
         $data = DB::table($subQuery)
             ->selectRaw('decile, average, totalPerGroup, round(100 * totalPerGroup / @total, 1) as totalRatio')
             ->get();
+
+        $labels = $data->pluck('decile');
+        $totals = $data->pluck('totalPerGroup');
+
+        return [$data, $labels, $totals];
     }
 
 }
